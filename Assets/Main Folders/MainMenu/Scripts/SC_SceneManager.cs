@@ -9,10 +9,13 @@ public class SC_SceneManager : MonoBehaviour
   void Start(){
     DontDestroyOnLoad(breakMenuUI.transform.parent);
     breakMenuUI.SetActive(false);
+    
+    if(isPaused)
+      TogglePause();
   }
 
   void Update(){
-    if((SceneManager.GetActiveScene().name == "MainMenu" && breakMenuUI.activeSelf == true) || pauseButton.activeSelf == true){
+    if(SceneManager.GetActiveScene().name == "MainMenu" && (breakMenuUI.activeSelf == true || pauseButton.activeSelf == true)){
       breakMenuUI.SetActive(false);
       pauseButton.SetActive(false);
     }

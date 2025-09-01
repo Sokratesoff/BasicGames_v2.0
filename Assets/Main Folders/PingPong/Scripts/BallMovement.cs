@@ -16,14 +16,17 @@ public class BallMovement : MonoBehaviour
     }
 
     void FixedUpdate(){
+        ballSpeed += Time.deltaTime;
         MaintainSpeed();
     }
 
     private void OnCollisionEnter(Collision collision){
         if (collision.gameObject.CompareTag("Paddle")) {
+            ballSpeed += 0.35f;
             BounceOffPaddle(collision);
         }
         else if (collision.gameObject.CompareTag("Wall")) {
+            ballSpeed += 0.35f;
             BounceOffWall(collision);
         }
 
@@ -36,6 +39,8 @@ public class BallMovement : MonoBehaviour
             scoreManager.IncreaseTheRightScore();
         }
 
+        ballSpeed = 8f;
+        
         transform.position = new(0f, 0f, -0.3f);
         LaunchBall();
     }
@@ -76,7 +81,8 @@ public class BallMovement : MonoBehaviour
 
     private void BounceOffWall(Collision collision){
         Vector3 reflectDir = Vector3.Reflect(rb.linearVelocity.normalized, collision.contacts[0].normal);
-        rb.linearVelocity = reflectDir * ballSpeed;
+        Vector3 sharpDir = (reflectDir + collision.contacts[0].normal * 0.5f).normalized;
+        rb.linearVelocity = sharpDir * ballSpeed * 1.5f;
     }
 
     private float HitFactor(Vector3 ballPos, Vector3 paddlePos, float paddleHeight){

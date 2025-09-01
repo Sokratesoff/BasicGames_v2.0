@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
         if(!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.Space)) 
             return;
         
+        GetComponent<Rigidbody>().linearVelocity = new Vector3(GetComponent<Rigidbody>().linearVelocity.x, 0f, GetComponent<Rigidbody>().linearVelocity.z);
         GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
         if(isGameStarted) return;

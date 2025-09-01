@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Fruit
   - SnakeTail
+  - Wall
   layers:
   - Default
   - TransparentFX

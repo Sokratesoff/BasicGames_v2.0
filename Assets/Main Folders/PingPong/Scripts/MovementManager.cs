@@ -14,9 +14,7 @@ public class PingPongGame3D : MonoBehaviour
     }
 
     void Update(){
-        #if UNITY_EDITOR || UNITY_STANDALONE
         HandleKeyboardInput();
-        #endif
 
         HandleTouches();
     }

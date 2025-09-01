@@ -14,7 +14,7 @@ public class MovementScript : MonoBehaviour
     public float yPosition = 1f;
     private Vector3 moveDirection = Vector3.left;
 
-    private bool ableToChangeDirection = true;
+    //private bool canMove = true, ableToChangeDirection = true;
 
     private Color rayColor;
 
@@ -43,7 +43,7 @@ public class MovementScript : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision){
-        if(collision.gameObject.CompareTag("SnakeTail")){
+        if(collision.gameObject.CompareTag("SnakeTail") || collision.gameObject.CompareTag("Wall")){
             SceneManager.LoadScene("SnakeGame");
         }
 
@@ -68,8 +68,7 @@ public class MovementScript : MonoBehaviour
     }
 
     private void HandleInput(){
-        if(!ableToChangeDirection)
-            return;
+        //if(!ableToChangeDirection) return;
 
         if (Input.GetKey(KeyCode.W)){
             moveDirection = Vector3.forward;
@@ -82,27 +81,22 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    private void HandleSwipeInput()
-    {
-        if (Input.touchCount == 0) return;
+    private void HandleSwipeInput(){
+        //if(!ableToChangeDirection) return;
 
+        if (Input.touchCount == 0) return;
 
         Touch touch = Input.GetTouch(0);
 
-
-        if (touch.phase == TouchPhase.Began)
-        {
+        if (touch.phase == TouchPhase.Began){
             swipeStart = touch.position;
-        }
-        else if (touch.phase == TouchPhase.Ended)
-        {
+        }else if (touch.phase == TouchPhase.Ended){
             swipeEnd = touch.position;
             DetectSwipe();
         }
     }
 
-    private void DetectSwipe()
-    {
+    private void DetectSwipe(){
         Vector2 swipe = swipeEnd - swipeStart;
 
 
@@ -113,12 +107,9 @@ public class MovementScript : MonoBehaviour
         bool isHorizontal = Mathf.Abs(swipe.x) > Mathf.Abs(swipe.y);
 
 
-        if (isHorizontal)
-        {
+        if (isHorizontal){
             moveDirection = swipe.x > 0 ? Vector3.right : Vector3.left;
-        }
-        else
-        {
+        }else{
             moveDirection = swipe.y > 0 ? Vector3.forward : Vector3.back;
         }
     }
@@ -129,12 +120,17 @@ public class MovementScript : MonoBehaviour
         lastPos = transform.position;
         transform.position += moveDirection;
 
-        CheckForEdges();
+        //CheckForEdges();
         
         TailHandler.MoveTails();
         return;
     }
 
+    //=======================================================================================================
+    //  Loop on the edges of the map feature (To keep game simple and more like classic snake disabled)
+    //=======================================================================================================
+
+    /*
     private void CheckForEdges(){
         Ray ray = new(gameObject.transform.position, -transform.up);
 
@@ -164,4 +160,5 @@ public class MovementScript : MonoBehaviour
         else if (Mathf.Abs(normalizedDirection.z) == 1f || Mathf.Abs(normalizedDirection.y) == -1f)
             transform.position = new Vector3(transform.position.x, transform.position.y, -transform.position.z);
     }
+    */
 }
